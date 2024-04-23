@@ -26,9 +26,9 @@
         </aside>
 
     </div>
-
+   
     <?php include 'scripts.php'; ?>
-
+    <?= $this->renderSection('javascripts') ?>
 </body>
 
 </html>
