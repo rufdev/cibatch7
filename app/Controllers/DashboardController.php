@@ -9,6 +9,16 @@ class DashboardController extends BaseController
 {
     public function index()
     {
-         return view('pages/dashboard');
+        $officeModel = new \App\Models\OfficeModel();
+        $ticketModel = new \App\Models\TicketModel();
+
+        $data['totaloffices'] = $officeModel->countAllResults();
+        $data['totaltickets'] = $ticketModel->countAllResults();
+
+        $data['totalopen'] = $ticketModel->where("state","open")->countAllResults();
+        $data['totalclosed'] = $ticketModel->where("state","closed")->countAllResults();
+
+
+         return view('pages/dashboard', $data);
     }
 }
