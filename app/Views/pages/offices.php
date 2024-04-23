@@ -46,16 +46,20 @@
                 </button>
             </div>
             <div class="modal-body">
-                <div class="card card-primary">
-                    <form>
+                    <form class="needs-validation" novalidate>
                         <div class="card-body">
                             <div class="form-group">
                                 <label for="code">Code</label>
-                                <input type="text" class="form-control" id="code" name="code" placeholder="Enter Office Code">
+                                <input type="text" class="form-control" id="code" name="code" placeholder="Enter Office Code" required>
+                                <div class="valid-feedback">Looks Good!</div>
+                                <div class="invalid-feedback">Please enter a valid code</div>
+
                             </div>
                             <div class="form-group">
                                 <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Office Name">
+                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Office Name" required>
+                                <div class="valid-feedback">Looks Good!</div>
+                                <div class="invalid-feedback">Please enter a valid code</div>
                             </div>
                         </div>
 
@@ -63,7 +67,7 @@
                             <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </form>
-                </div>
+              
 
 
             </div>
@@ -81,7 +85,51 @@
 
 <?= $this->section('javascripts') ?>
 <script>
-    $("#datatable").DataTable({
+    $(function() {
+        $('form').submit(function(e){
+            e.preventDefault();
+
+            let formdata = $(this).serializeArray().reduce(function(obj,item){
+                obj[item.name] = item.value;
+                return obj;
+            },{});
+
+            // alert(JSON.stringify(formdata));
+
+            let jsondata = JSON.stringify(formdata);
+
+            $.ajax({
+                url: "<?= base_url('offices') ?>",
+                type: "POST",
+                data: jsondata,
+                success: function (response) {
+                    $(document).Toasts('create',{
+                        class: 'bg-success',
+                        title: 'SUCCESS',
+                        body : JSON.stringify(response.message),
+                        autohide: true,
+                        delay: 3000
+                    });
+                    $("#modalform").modal('hide');
+                    table.ajax.reload();
+                },
+                error: function(response){
+                    let parseresponse = JSON.parse(response.responseText);
+                    $(document).Toasts('create',{
+                        class: 'bg-danger',
+                        title: 'ERROR',
+                        body : JSON.stringify(parseresponse.message),
+                        autohide: true,
+                        delay: 3000
+                    });
+                },  
+            });
+
+
+        });
+    });
+
+    let table = $("#datatable").DataTable({
         responsive: true,
         processing: true,
         serverSide: true,
