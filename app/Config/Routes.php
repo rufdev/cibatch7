@@ -7,6 +7,8 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 
+$routes->get('dashboard', 'DashboardController::index');
+
 // $routes->get('office', 'OfficeController::index');
 
 $routes->resource('offices',['controller' => 'OfficeController', 'filter' => 'group:admin,user']);
