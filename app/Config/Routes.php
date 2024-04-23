@@ -11,6 +11,8 @@ $routes->get('dashboard', 'DashboardController::index');
 
 // $routes->get('office', 'OfficeController::index');
 
+$routes->post('offices/list', 'OfficeController::list');
+
 $routes->resource('offices',['controller' => 'OfficeController', 'filter' => 'group:admin,user']);
 $routes->resource('tickets',['controller' => 'TicketController', 'filter' => 'group:admin,user']);
 

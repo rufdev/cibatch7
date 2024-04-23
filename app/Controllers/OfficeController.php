@@ -44,6 +44,57 @@ class OfficeController extends ResourceController
         return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($result);
     }
 
+    public function list(){
+        $officeModel = new \App\Models\OfficeModel();
+        $postData = $this->request->getPost();
+
+        $draw = $postData['draw'];
+        $start = $postData['start'];
+        $rowperpage = $postData['length'];
+        $seachvalue = $postData['search']['value'];
+        $sortby = $postData['order'][0]['column'];
+        $sortdir = $postData['order'][0]['dir'];
+        $sortcolumn = $postData['columns'][$sortby]['data'];
+       
+        // total records 
+        $totalRecords = $officeModel->select('id')->countAllResults();
+
+        // total records with filter
+
+        $totalRecordswithFilter = $officeModel->select('id')
+        ->like('code',$seachvalue)
+        ->orLike('name',$seachvalue)
+        ->orderBy($sortcolumn,$sortdir)
+        ->countAllResults();
+
+        //records
+
+        $records = $officeModel->select('*')
+        ->like('code',$seachvalue)
+        ->orLike('name',$seachvalue)
+        ->orderBy($sortcolumn,$sortdir)
+        ->findAll($rowperpage,$start);
+
+        $data = array();
+
+        foreach ($records as $record) {
+            $data[] = array (
+                'id' => $record['id'],
+                'code' => $record['code'],
+                'name' => $record['name'],
+            );
+        }
+
+        $response = array(
+            "draw" => intval($draw),
+            "recordsTotal" => $totalRecords,
+            "recordsFiltered" => $totalRecordswithFilter,
+            "data" => $data
+        );
+
+        return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($response);
+    }
+
     /**
      * Return a new resource object, with default properties.
      *
