@@ -22,6 +22,12 @@
     <link rel="stylesheet" href="plugins/daterangepicker/daterangepicker.css">
 
     <link rel="stylesheet" href="plugins/summernote/summernote-bs4.min.css">
+
+    
+<link rel="stylesheet" href="plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+<link rel="stylesheet" href="plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+<link rel="stylesheet" href="plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+
     <script nonce="f66137cf-b7c3-4942-a324-6616a71546a4">
         try {
             (function(w, d) {
