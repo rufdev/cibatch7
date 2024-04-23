@@ -5,23 +5,25 @@ namespace App\Controllers;
 use App\Controllers\BaseController;
 use CodeIgniter\HTTP\ResponseInterface;
 use CodeIgniter\HTTP\Response;
+
 class TicketController extends BaseController
 {
-     /**
+    /**
      * Return an array of resource objects, themselves in array format.
      *
      * @return ResponseInterface
      */
     public function index()
     {
-        $ticketModel = new \App\Models\TicketModel();
-        $result = $ticketModel->findAll();
+        //     $ticketModel = new \App\Models\TicketModel();
+        //     $result = $ticketModel->findAll();
 
-        if (!$result) {
-            return $this->response->setStatusCode(Response::HTTP_NOT_FOUND);
-        }
+        //     if (!$result) {
+        //         return $this->response->setStatusCode(Response::HTTP_NOT_FOUND);
+        //     }
 
-        return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($result);
+        //     return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($result);
+        return view('pages/tickets');
     }
 
     /**
@@ -63,9 +65,9 @@ class TicketController extends BaseController
         $ticketModel = new \App\Models\TicketModel();
         $data = $this->request->getJSON();
 
-        if(!$ticketModel->validate($data)){
+        if (!$ticketModel->validate($data)) {
             $response = array(
-                'status'=> 'error',
+                'status' => 'error',
                 'message' => $ticketModel->errors()
             );
             return $this->response->setStatusCode(Response::HTTP_BAD_REQUEST)->setJSON($response);
@@ -73,7 +75,7 @@ class TicketController extends BaseController
 
         $ticketModel->insert($data);
         $response = array(
-            'status'=> 'success',
+            'status' => 'success',
             'message' => 'Office added successfully'
         );
 
@@ -104,17 +106,17 @@ class TicketController extends BaseController
         $ticketModel = new \App\Models\TicketModel();
         $data = $this->request->getJSON();
 
-        if(!$ticketModel->validate($data)){
+        if (!$ticketModel->validate($data)) {
             $response = array(
-                'status'=> 'error',
+                'status' => 'error',
                 'message' => $ticketModel->errors()
             );
             return $this->response->setStatusCode(Response::HTTP_BAD_REQUEST)->setJSON($response);
         }
 
-        $ticketModel->update($id,$data);
+        $ticketModel->update($id, $data);
         $response = array(
-            'status'=> 'success',
+            'status' => 'success',
             'message' => 'Office updated successfully'
         );
 
@@ -143,7 +145,7 @@ class TicketController extends BaseController
 
         $ticketModel->delete($id);
         $response = array(
-            'status'=> 'success',
+            'status' => 'success',
             'message' => 'Office deleted successfully'
         );
 

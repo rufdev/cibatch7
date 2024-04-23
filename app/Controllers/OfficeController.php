@@ -14,14 +14,15 @@ class OfficeController extends ResourceController
      */
     public function index()
     {
-        $officeModel = new \App\Models\OfficeModel();
-        $result = $officeModel->findAll();
+        // $officeModel = new \App\Models\OfficeModel();
+        // $result = $officeModel->findAll();
 
-        if (!$result) {
-            return $this->response->setStatusCode(Response::HTTP_NOT_FOUND);
-        }
+        // if (!$result) {
+        //     return $this->response->setStatusCode(Response::HTTP_NOT_FOUND);
+        // }
 
-        return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($result);
+        // return $this->response->setStatusCode(Response::HTTP_OK)->setJSON($result);
+        return view('pages/offices');
     }
 
     /**

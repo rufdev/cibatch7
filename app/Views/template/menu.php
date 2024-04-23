@@ -51,7 +51,7 @@
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
                 <li class="nav-item">
                     <a href="<?= base_url('dashboard')?>" class="nav-link">
-                        <i class="fas fa-rocket nav-icon"></i>
+                        <i class="fas fa-chart-pie nav-icon"></i>
                         <p>Dashboard</p>
                     </a>
                 </li>

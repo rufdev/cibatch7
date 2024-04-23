@@ -12,6 +12,6 @@ $routes->get('dashboard', 'DashboardController::index');
 // $routes->get('office', 'OfficeController::index');
 
 $routes->resource('offices',['controller' => 'OfficeController', 'filter' => 'group:admin,user']);
-$routes->resource('tickets',['controller' => 'TicketController', 'filter' => 'group:admin']);
+$routes->resource('tickets',['controller' => 'TicketController', 'filter' => 'group:admin,user']);
 
 service('auth')->routes($routes);

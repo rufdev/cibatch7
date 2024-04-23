@@ -9,6 +9,6 @@ class DashboardController extends BaseController
 {
     public function index()
     {
-         return view('template/admin_template');
+         return view('pages/dashboard');
     }
 }
