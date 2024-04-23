@@ -32,7 +32,7 @@
             <img src="dist/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
         </div> -->
             <div class="info">
-                <a href="#" class="d-block"><?= auth()->user()->username ?? "GUEST" ?></a>
+                <a href="#" class="d-block"><?= auth()->user()->username  ?? "GUEST" ?></a>
             </div>
         </div>
 
@@ -49,24 +49,28 @@
 
         <nav class="mt-2">
             <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
+                <?php if (auth()->user()->inGroup('admin')) : ?>
+                    <li class="nav-item">
+                        <a href="<?= base_url('dashboard') ?>" class="nav-link <?= (uri_string() == 'dashboard') ? 'active' : '' ?>">
+                            <i class="fas fa-chart-pie nav-icon"></i>
+                            <p>Dashboard</p>
+                        </a>
+                    </li>
+                <?php endif; ?>
                 <li class="nav-item">
-                    <a href="<?= base_url('dashboard')?>" class="nav-link <?= (uri_string() =='dashboard') ? 'active' : '' ?>">
-                        <i class="fas fa-chart-pie nav-icon"></i>
-                        <p>Dashboard</p>
-                    </a>
-                </li>
-                <li class="nav-item">
-                    <a href="<?= base_url('tickets')?>" class="nav-link <?= (uri_string() =='tickets') ? 'active' : '' ?>">
+                    <a href="<?= base_url('tickets') ?>" class="nav-link <?= (uri_string() == 'tickets') ? 'active' : '' ?>">
                         <i class="fas fa-file nav-icon"></i>
                         <p>Tickets</p>
                     </a>
                 </li>
-                <li class="nav-item">
-                    <a href="<?= base_url('offices')?>" class="nav-link <?= (uri_string() =='offices') ? 'active' : '' ?>">
-                        <i class="fas fa-briefcase nav-icon"></i>
-                        <p>Offices</p>
-                    </a>
-                </li>
+                <?php if (auth()->user()->inGroup('admin')) : ?>
+                    <li class="nav-item">
+                        <a href="<?= base_url('offices') ?>" class="nav-link <?= (uri_string() == 'offices') ? 'active' : '' ?>">
+                            <i class="fas fa-briefcase nav-icon"></i>
+                            <p>Offices</p>
+                        </a>
+                    </li>
+                <?php endif; ?>
             </ul>
         </nav>
 

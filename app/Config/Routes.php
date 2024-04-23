@@ -7,13 +7,13 @@ use CodeIgniter\Router\RouteCollection;
  */
 $routes->get('/', 'Home::index');
 
-$routes->get('dashboard', 'DashboardController::index');
+$routes->get('dashboard', 'DashboardController::index', ['filter' => 'group:admin']);
 
 // $routes->get('office', 'OfficeController::index');
 
-$routes->post('offices/list', 'OfficeController::list');
+$routes->post('offices/list', 'OfficeController::list' , ['filter' => 'group:admin']);
 
-$routes->resource('offices',['controller' => 'OfficeController', 'filter' => 'group:admin,user']);
+$routes->resource('offices',['controller' => 'OfficeController', 'filter' => 'group:admin']);
 $routes->resource('tickets',['controller' => 'TicketController', 'filter' => 'group:admin,user']);
 
 service('auth')->routes($routes);

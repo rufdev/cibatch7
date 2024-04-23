@@ -255,7 +255,10 @@
                     <button id="menuToggle">&#9776;</button>
                 </li>
                 <li class="menu-item hidden"><a href="#">Home</a></li>
-                <?php if (auth()->loggedIn()) { ?>
+                <?php if (auth()->loggedIn() && auth()->user()->inGroup('user')) { ?>
+                    <li class="menu-item hidden"><a href="<?= base_url('tickets') ?>">Tickets</a></li>
+                    <li class="menu-item hidden"><a href="<?= base_url('logout') ?>">Logout</a></li>
+                <?php } else if (auth()->loggedIn() && auth()->user()->inGroup('admin')) { ?>
                     <li class="menu-item hidden"><a href="<?= base_url('dashboard') ?>">Dashboard</a></li>
                     <li class="menu-item hidden"><a href="<?= base_url('logout') ?>">Logout</a></li>
                 <?php } else { ?>
