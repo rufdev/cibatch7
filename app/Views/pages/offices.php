@@ -46,28 +46,29 @@
                 </button>
             </div>
             <div class="modal-body">
-                    <form class="needs-validation" novalidate>
-                        <div class="card-body">
-                            <div class="form-group">
-                                <label for="code">Code</label>
-                                <input type="text" class="form-control" id="code" name="code" placeholder="Enter Office Code" required>
-                                <div class="valid-feedback">Looks Good!</div>
-                                <div class="invalid-feedback">Please enter a valid code</div>
+                <form class="needs-validation" novalidate>
+                    <div class="card-body">
+                        <input type="hidden" id="id" name="id" />
+                        <div class="form-group">
+                            <label for="code">Code</label>
+                            <input type="text" class="form-control" id="code" name="code" placeholder="Enter Office Code" required>
+                            <div class="valid-feedback">Looks Good!</div>
+                            <div class="invalid-feedback">Please enter a valid code</div>
 
-                            </div>
-                            <div class="form-group">
-                                <label for="name">Name</label>
-                                <input type="text" class="form-control" id="name" name="name" placeholder="Enter Office Name" required>
-                                <div class="valid-feedback">Looks Good!</div>
-                                <div class="invalid-feedback">Please enter a valid code</div>
-                            </div>
                         </div>
+                        <div class="form-group">
+                            <label for="name">Name</label>
+                            <input type="text" class="form-control" id="name" name="name" placeholder="Enter Office Name" required>
+                            <div class="valid-feedback">Looks Good!</div>
+                            <div class="invalid-feedback">Please enter a valid code</div>
+                        </div>
+                    </div>
 
-                        <div class="card-footer">
-                            <button type="submit" class="btn btn-primary">Submit</button>
-                        </div>
-                    </form>
-              
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </form>
+
 
 
             </div>
@@ -86,44 +87,80 @@
 <?= $this->section('javascripts') ?>
 <script>
     $(function() {
-        $('form').submit(function(e){
+        $('form').submit(function(e) {
             e.preventDefault();
 
-            let formdata = $(this).serializeArray().reduce(function(obj,item){
+            let formdata = $(this).serializeArray().reduce(function(obj, item) {
                 obj[item.name] = item.value;
                 return obj;
-            },{});
-
+            }, {});
             // alert(JSON.stringify(formdata));
-
             let jsondata = JSON.stringify(formdata);
 
-            $.ajax({
-                url: "<?= base_url('offices') ?>",
-                type: "POST",
-                data: jsondata,
-                success: function (response) {
-                    $(document).Toasts('create',{
-                        class: 'bg-success',
-                        title: 'SUCCESS',
-                        body : JSON.stringify(response.message),
-                        autohide: true,
-                        delay: 3000
+            if (this.checkValidity()) {
+
+                if (!formdata.id) {
+                    //create
+                    $.ajax({
+                        url: "<?= base_url('offices') ?>",
+                        type: "POST",
+                        data: jsondata,
+                        success: function(response) {
+                            $(document).Toasts('create', {
+                                class: 'bg-success',
+                                title: 'SUCCESS',
+                                body: JSON.stringify(response.message),
+                                autohide: true,
+                                delay: 3000
+                            });
+                            $("#modalform").modal('hide');
+                            table.ajax.reload();
+                            clearform();
+                        },
+                        error: function(response) {
+                            let parseresponse = JSON.parse(response.responseText);
+                            $(document).Toasts('create', {
+                                class: 'bg-danger',
+                                title: 'ERROR',
+                                body: JSON.stringify(parseresponse.message),
+                                autohide: true,
+                                delay: 3000
+                            });
+                        },
                     });
-                    $("#modalform").modal('hide');
-                    table.ajax.reload();
-                },
-                error: function(response){
-                    let parseresponse = JSON.parse(response.responseText);
-                    $(document).Toasts('create',{
-                        class: 'bg-danger',
-                        title: 'ERROR',
-                        body : JSON.stringify(parseresponse.message),
-                        autohide: true,
-                        delay: 3000
+                } else {
+                    // update
+                    $.ajax({
+                        url: "<?= base_url('offices') ?>/" + formdata.id,
+                        type: "PUT",
+                        data: jsondata,
+                        success: function(response) {
+                            $(document).Toasts('create', {
+                                class: 'bg-success',
+                                title: 'SUCCESS',
+                                body: JSON.stringify(response.message),
+                                autohide: true,
+                                delay: 3000
+                            });
+                            $("#modalform").modal('hide');
+                            table.ajax.reload();
+                            clearform();
+                        },
+                        error: function(response) {
+                            let parseresponse = JSON.parse(response.responseText);
+                            $(document).Toasts('create', {
+                                class: 'bg-danger',
+                                title: 'ERROR',
+                                body: JSON.stringify(parseresponse.message),
+                                autohide: true,
+                                delay: 3000
+                            });
+                        },
                     });
-                },  
-            });
+                }
+
+
+            }
 
 
         });
@@ -153,11 +190,59 @@
             data: '',
             defaultContent: `
                 <td>
-                <button type="button" class="btn btn-warning">Edit</button>
-                <button type="button" class="btn btn-danger">Delete</button>
+                <button type="button" class="btn btn-warning" id="editBtn">Edit</button>
+                <button type="button" class="btn btn-danger" id="deleteBtn">Delete</button>
                 </td>
                 `
         }],
     });
+
+    $(document).on("click", "#editBtn", function() {
+        let row = $(this).parents("tr")[0];
+        let id = table.row(row).data().id;
+
+        $.ajax({
+            url: "<?= base_url('offices'); ?>/" + id,
+            type: "GET",
+            success: function(response) {
+                $("#modalform").modal('show');
+                $("#id").val(response.id);
+                $("#code").val(response.code);
+                $("#name").val(response.name);
+            },
+            error: function(response) {
+                let parseresponse = JSON.parse(response.responseText);
+                $(document).Toasts('create', {
+                    class: 'bg-danger',
+                    title: 'ERROR',
+                    body: JSON.stringify(parseresponse.message),
+                    autohide: true,
+                    delay: 3000
+                });
+            },
+        })
+
+    });
+
+    $(document).ready(function() {
+        'use strict';
+        let form = $(".needs-validation");
+        form.each(function() {
+            $(this).on('submit', function(e) {
+                if (this.checkValidity() === false) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                }
+                $(this).addClass('was-validated');
+            });
+        });
+    });
+
+
+    function clearform() {
+        $("#id").val('');
+        $("#code").val('');
+        $("#name").val('');
+    }
 </script>
 <?= $this->endSection() ?>
