@@ -12,7 +12,16 @@ class TicketModel extends Model
     protected $returnType       = 'array';
     protected $useSoftDeletes   = false;
     protected $protectFields    = true;
-    protected $allowedFields    = [];
+    protected $allowedFields    = [
+        'first_name',
+        'last_name',
+        'email',
+        'office_id',
+        'state',
+        'severity',
+        'description',
+        'remarks'
+    ];
 
     protected bool $allowEmptyInserts = false;
     protected bool $updateOnlyChanged = true;
@@ -21,14 +30,23 @@ class TicketModel extends Model
     protected array $castHandlers = [];
 
     // Dates
-    protected $useTimestamps = false;
+    protected $useTimestamps = true;
     protected $dateFormat    = 'datetime';
     protected $createdField  = 'created_at';
     protected $updatedField  = 'updated_at';
     protected $deletedField  = 'deleted_at';
 
     // Validation
-    protected $validationRules      = [];
+    protected $validationRules      = [
+        'first_name' => 'required|max_length[100]',
+        'last_name' => 'required|max_length[100]',
+        'email' => 'required|valid_email|max_length[100]',
+        'office_id' => 'required|numeric',
+        'state' => 'required|in_list[open,closed]',
+        'severity' => 'required|in_list[low,medium,high]',
+        'description' => 'required|',
+        'remarks' => 'permit_empty|',
+    ];
     protected $validationMessages   = [];
     protected $skipValidation       = false;
     protected $cleanValidationRules = true;
