@@ -10,7 +10,6 @@
 
 <script src="plugins/chart.js/Chart.min.js"></script>
 
-<script src="plugins/sparklines/sparkline.js"></script>
 
 <script src="plugins/jqvmap/jquery.vmap.min.js"></script>
 <script src="plugins/jqvmap/maps/jquery.vmap.usa.js"></script>
@@ -28,7 +27,7 @@
 
 <script src="dist/js/adminlte.js?v=3.2.0"></script>
 
-<script src="dist/js/pages/dashboard.js"></script>
+
 
 
 <script src="plugins/datatables/jquery.dataTables.min.js"></script>
